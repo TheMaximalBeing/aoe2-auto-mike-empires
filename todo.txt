@@ -1,0 +1,24 @@
++ fix civ bug
++ proper age list
++ turn off unequal ages
++ fix data save
++ optimize ai scripts
++ allow double-counting units if different civs
++ fix loser? bug
++ repeat for a minimum and maximum amount of tries
++ repeat until convergence reached
++ add re-engage micro
++ move to separate repo
+
+- turn off all hit-and-run and avoid-projectile micro
+- calculate unit strength difference + convergence for this
+- time how long calculations take
+- add ETA calculation
+- create separate ai to print costs of units
+- set unit counts based on cost data
+- weights for each resources
+- weights take into account all civ bonuses
+- print formatted data to file
+- print final stats from loaded data
+- load correct costs ratios from file
+- add remaining civs
