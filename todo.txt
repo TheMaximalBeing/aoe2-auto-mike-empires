@@ -10,15 +10,52 @@
 + add re-engage micro
 + move to separate repo
 
+--- report DE bug
 - turn off all hit-and-run and avoid-projectile micro
 - calculate unit strength difference + convergence for this
 - time how long calculations take
 - add ETA calculation
-- create separate ai to print costs of units
+--- create separate ai to print costs of units
 - set unit counts based on cost data
 - weights for each resources
 - weights take into account all civ bonuses
-- print formatted data to file
-- print final stats from loaded data
+--- print formatted data to file
+--- print final stats from loaded data
 - load correct costs ratios from file
 - add remaining civs
+
+PERFORMANCE
+
+- avoid double counting when different civs have identicle units
+SPEEDUP: ~3.00
+- better micro to avoid bad pathing
+SPEEDUP: ~2.00
+- place groups closer together where possible
+SPEEDUP: ~1.20
+- fully turn off built-in micro
+SPEEDUP: ~1.20
+- better match selection and convergence
+SPEEDUP: ~1.50
+
+- run multiple AoE2 windows
+SPEEDUP: 2.00 to 10.00
+- run on multiple PCs
+SPEEDUP: 2.00 to 5.00
+
+- allow matches to be re-run in same scenario using triggers
+SPEEDUP: ~3.00
+
+- stop matches when we reach 50% hp, rather than all of it
+SPEEDUP: ~2.00
+- run game on 4x speed???
+SPEEDUP: ~2.00
+- disable units that are never worth making
+SPEEDUP: ~2.00
+- allow up to 1600 units on map
+SPEEDUP: ~2.00
+- skip non-playable civs
+SPEEDUP: ???
+
+civs: 53
+ages: 3
+units: ~10
