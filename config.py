@@ -30,19 +30,34 @@ debug_print = True
 matches_per_scenario = 60
 
 # minimum number of times a specific match should be repreated
-min_repeats = 6
+min_repeats = 10
 
 # maximum number of times a specific match should be repreated
-max_repeats = 120
+max_repeats = 200
 
 # goal for standard error; we repeat matches until it falls below this value
-sterr_conv_threshold = 0.02
+sterr_conv_threshold = 0.01
 
 # list of all civs considered for automatch
 civ_list = [ Civilization.ARMENIANS ]
 
-# list of all ages considered for automatch (N.B. units are actually from the pervious age)
+# list of all ages considered for automatch (N.B. units are actually from the previous age)
 age_list = [ StartingAge.CASTLE_AGE]#, StartingAge.IMPERIAL_AGE, StartingAge.POST_IMPERIAL_AGE ]
+
+# ideal number of units per group; may be changed to balance resources
+num_units = 7
+
+# "fixed_number" or "total_resources"
+type = "total_resources"
+
+# how much each resource is worth
+resource_weights = { 
+    
+    "F":{"F":1.40, "W":0.90, "S":1.00, "G":1.00},
+    "C":{"F":1.20, "W":1.00, "S":1.00, "G":1.00},
+    "I":{"F":1.00, "W":1.00, "S":1.00, "G":1.20},
+    # "I":{"F":1.00, "W":1.00, "S":1.00, "G":3.50}, # no gold version
+}
 
 # data for each match; must be same as autoMatch.hpp
 class Match:
