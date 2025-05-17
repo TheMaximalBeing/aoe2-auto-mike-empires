@@ -8,6 +8,7 @@
 - pip install pynput
 - pip install pygetwindow
 - pip install numpy
+- pip install pandas
 
 ## Installation
 

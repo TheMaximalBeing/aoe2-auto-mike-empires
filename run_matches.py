@@ -1,46 +1,27 @@
 import os
 import time
+import pathlib
 
 import pynput.keyboard
 import pygetwindow
 import numpy
+import pandas
 from AoE2ScenarioParser.datasets.object_support import *
 
 from utils_units import *
+from utils_data import *
 from utils_scenario import *
 from config import *
 
-fulldata = []
-matchData = {}
-matchDataStats = {}
+matchData = loadResults()
+matchDataStats = calculateStats(matchData)
+matchDataNew = {}
 
 # --------------------------------
 
 def printd(val):
     if debug_print: print("DEBUG:",val)
 
-def lookupAge(age):
-    if age == StartingAge.CASTLE_AGE:
-        return "F"
-    if age == StartingAge.IMPERIAL_AGE:
-        return "C"
-    if age == StartingAge.POST_IMPERIAL_AGE:
-        return "I"
-    return "D"
-
-def getMatchName(a2_, a3_, c2_, c3_, u2_, u3_):
-
-    a2 = lookupAge(a2_)
-    a3 = lookupAge(a3_)
-    c2 = c2_.name.lower().replace("_","-")
-    c3 = c3_.name.lower().replace("_","-")
-    u2 = UnitInfo.from_id(u2_).name.lower().replace("_","-")
-    u3 = UnitInfo.from_id(u3_).name.lower().replace("_","-")
-
-    name2 = a2 + "_" + c2 + "_" + u2
-    name3 = a3 + "_" + c3 + "_" + u3
-    name = name2 + " vs " + name3
-    return name
 
 # --------------------------------
 
@@ -117,7 +98,11 @@ for c2i in range(len(civ_list)):
                         # no double counting units
                         if c2i == c3i and a2i == a3i and i3<i2: continue
                         
-                        unit_combos.append([u2, u3, 0])
+                        name = getMatchName(a2, a3, c2, c3, u2.ID, u3.ID)
+                        num = 0
+                        if name in matchDataStats: num = matchDataStats[name][3]
+
+                        unit_combos.append([u2, u3, num])
 
                 all_combos.append([c2, c3, a2, a3, unit_combos])
 
@@ -138,8 +123,10 @@ def setupNextScenario():
 
         name = getMatchName(a2, a3, c2, c3, c[0].ID, c[1].ID)
         sterr = 0
+        num = 0
         if name in matchDataStats:
             sterr = matchDataStats[name][2]
+            num = matchDataStats[name][3]
 
         if not ((c[2] >= min_repeats and sterr < sterr_conv_threshold) or c[2] >= max_repeats):
             completed = False
@@ -183,8 +170,6 @@ def setupNextScenario():
 
         rcombo.append([repeats_left, c])
 
-
-
     # add all matches in combo until we hit the max
     print("---- repeats-left ----")
     i = 0
@@ -220,6 +205,11 @@ def setupNextScenario():
 
 # loop over all scenarios
 while True:
+
+    # check if there are any matches remaining
+    if combo_index >= len(all_combos): 
+        print("all matches have been completed")
+        break
 
     # run next scenario and collect constants
     print("running next set of matches")
@@ -271,32 +261,27 @@ while True:
         # only include valid matches
         if m.status >= 3: matches.append(m)
 
-    fulldata.append(matches)
     print("added " + str(len(matches)) + " matches")
 
     # collect data for each matchup
     for m in matches:
         name = getMatchName(m.age, m.eage, m.civ, m.eciv, m.unitId, m.eunitId)
-        if name not in matchData:
-            matchData[name] = []
+        if name not in matchDataNew: matchDataNew[name] = []
+        matchDataNew[name].append(m)
+        if name not in matchData: matchData[name] = []
         matchData[name].append(m)
-                
+    
     # calculate stats for each matchup
-    for name, mlist in matchData.items():
-
-        hpPerDiff = []
-        for m in mlist:
-            hpPerDiff.append(m.hpFinal/m.hpInitial - m.ehpFinal/m.ehpInitial)
-        mean = numpy.mean(hpPerDiff)
-        std = numpy.std(hpPerDiff)
-        count = len(hpPerDiff)
-        sterr = std / numpy.sqrt(count)
-        matchDataStats[name] = [mean, std, sterr, count]
+    matchDataStats = calculateStats(matchData)
 
     # check if there are any matches remaining
     if combo_index >= len(all_combos): 
         print("all matches have been completed")
         break
+
+
+# save results to file
+saveResults(matchDataNew)
 
 # print results
 

@@ -2,6 +2,9 @@
 from AoE2ScenarioParser.datasets.object_support import *
 import os
 
+# game version
+game_version = "101.103.13286.0"
+
 # name of AutoMatch user
 user_name = "TMB"
 
