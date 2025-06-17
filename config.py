@@ -52,7 +52,7 @@ sterr_conv_threshold = 0.04
 # ]
 
 civ_list = [ 
-    Civilization.BYZANTINES, Civilization.DRAVIDIANS
+    Civilization.BYZANTINES
 ]
 
 # list of all ages considered for automatch (N.B. units are actually from the previous age)
@@ -60,6 +60,9 @@ age_list = [ StartingAge.POST_IMPERIAL_AGE]#, StartingAge.IMPERIAL_AGE, Starting
 
 # ideal number of units per group; may be changed to balance resources
 num_units = 20
+
+# maximum difference allowed from ideal number of units
+num_units_delta = 2
 
 # "fixed_number" or "total_resources"
 type = "fixed_number"
@@ -69,8 +72,8 @@ resource_weights = {
     
     "F":{"F":1.40, "W":0.90, "S":1.00, "G":1.00},
     "C":{"F":1.20, "W":1.00, "S":1.00, "G":1.00},
-    "I":{"F":1.00, "W":1.00, "S":1.00, "G":1.20},
-    # "I":{"F":1.00, "W":1.00, "S":1.00, "G":3.50}, # no gold version
+    # "I":{"F":1.00, "W":1.00, "S":1.00, "G":1.20},
+    "I":{"F":1.00, "W":1.00, "S":1.00, "G":3.50}, # no gold version
 }
 
 # spacing between matches; must be same as autoMatch.hpp

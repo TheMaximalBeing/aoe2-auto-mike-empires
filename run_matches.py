@@ -6,6 +6,7 @@ from utils_scenario import *
 from config import *
 from utils import *
 from de_auto_game import *
+from utils_unitCounts import *
 
 class MikeEmpires(DEAutoGame):
 
@@ -18,6 +19,7 @@ class MikeEmpires(DEAutoGame):
         self.combo_index = 0
         self.combo_offset = 0
 
+    # check if hpPerDiff is statistically significant
     def checkConvergence(self, overdone_th=999):
 
         nameA = self.all_combos[self.combo_index]
@@ -134,9 +136,16 @@ class MikeEmpires(DEAutoGame):
                 if reps > 0:
                     print("- ", getUnit(u2), getUnit(u3), reps)
 
+                closestRatio = getCounts(c2,c3,a2,a3,u2,u3,0.0)
+
                 # decide how many units
-                n2 = int(num_units/2)
-                n3 = int(num_units/2)
+                # n2 = int(num_units/2)
+                # n3 = int(num_units/2)
+
+                n2 = closestRatio[1]
+                n3 = closestRatio[0]
+
+                print("counts ", n2, n3)
 
                 # create match for each repeat
                 for k in range(reps):

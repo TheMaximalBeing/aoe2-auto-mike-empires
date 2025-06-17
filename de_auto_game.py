@@ -110,7 +110,7 @@ class DEAutoGame():
 
         # wait enough time for the game to restart
         printd("waiting for game to restart")
-        time.sleep(8)
+        time.sleep(4)
 
     # override me
     # process the xs data

@@ -30,8 +30,8 @@ counter = 0
 
 class ScenarioMatch:
 
-    def __init__(self):
-        self.scenario = AoE2DEScenario.from_file(folder_scn + "/" + name_scn_base)
+    def __init__(self, name=name_scn_base):
+        self.scenario = AoE2DEScenario.from_file(folder_scn + "/" + name)
         self.trigger_manager = self.scenario.trigger_manager
         self.unit_manager = self.scenario.unit_manager
         self.map_manager = self.scenario.map_manager

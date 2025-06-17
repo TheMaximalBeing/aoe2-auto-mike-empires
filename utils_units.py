@@ -35,12 +35,12 @@ disabledUnits = [
 # --- siege-workshop ---
 UnitInfo.BATTERING_RAM,
 UnitInfo.ARMORED_ELEPHANT,
-# UnitInfo.MANGONEL,
+UnitInfo.MANGONEL,
 # UnitInfo.ROCKET_CART,
-# UnitInfo.SCORPION,
+UnitInfo.SCORPION,
 UnitInfo.SIEGE_TOWER,
 # UnitInfo.WAR_CHARIOT_FOCUS,
-# UnitInfo.BOMBARD_CANNON,
+UnitInfo.BOMBARD_CANNON,
 # UnitInfo.MOUNTED_TREBUCHET, # !!!!!!
 # UnitInfo.TRACTION_TREBUCHET, # !!!!!!
 UnitInfo.FLAMING_CAMEL,
@@ -59,13 +59,13 @@ UnitInfo.DROMON,
 UnitInfo.THIRISADAI,
 UnitInfo.CANNON_GALLEON,
 # --- monastery ---
-# UnitInfo.MONK,
-# UnitInfo.MISSIONARY,
-# UnitInfo.WARRIOR_PRIEST,
+UnitInfo.MONK,
+UnitInfo.MISSIONARY,
+UnitInfo.WARRIOR_PRIEST,
 # --- castle ---
 # UnitInfo.COMPOSITE_BOWMAN,
 UnitInfo.PETARD,
-UnitInfo.TREBUCHET,
+UnitInfo.TREBUCHET_PACKED,
 
 ]
 
@@ -151,7 +151,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.COMPOSITE_BOWMAN, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -220,7 +220,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.JAGUAR_WARRIOR, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -290,7 +290,7 @@ tmp = [
 [UnitInfo.RATHA_MELEE, 3],
 [UnitInfo.RATHA_RANGED, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -359,7 +359,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.CAMEL_ARCHER, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -428,7 +428,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.HUSSITE_WAGON, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -497,7 +497,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.LONGBOWMAN, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -567,7 +567,7 @@ tmp = [
 [UnitInfo.KONNIK, 3],
 [UnitInfo.KONNIK_DISMOUNTED, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -636,7 +636,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.COUSTILLIER, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -705,7 +705,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.ARAMBAI, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -774,7 +774,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.CATAPHRACT, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -843,7 +843,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.WOAD_RAIDER, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -912,7 +912,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.CHU_KO_NU, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -981,7 +981,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.KIPCHAK, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1050,7 +1050,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.URUMI_SWORDSMAN, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1119,7 +1119,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.SHOTEL_WARRIOR, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1188,7 +1188,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.THROWING_AXEMAN, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1257,7 +1257,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.MONASPA, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1326,7 +1326,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.HUSKARL, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1395,7 +1395,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.CHAKRAM_THROWER, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1464,7 +1464,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.GHULAM, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1533,7 +1533,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.TARKAN, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1602,7 +1602,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.KAMAYUK, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1671,7 +1671,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.GENOESE_CROSSBOWMAN, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1740,7 +1740,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.SAMURAI, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1809,7 +1809,7 @@ tmp = [
 # --- castle ---
 # [UnitInfo.IRON_PAGODA, 3], # !!!!!!!!!!!!!!!!!! not working
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1878,7 +1878,7 @@ tmp = [
 # --- castle ---
 # [UnitInfo.LIAO_DAO, 3], # !!!!!!!!!!!!!!!!!! not working
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -1947,7 +1947,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.BALLISTA_ELEPHANT, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2016,7 +2016,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.WAR_WAGON, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2086,7 +2086,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.LEITIS, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2155,7 +2155,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.MAGYAR_HUSZAR, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2224,7 +2224,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.KARAMBIT_WARRIOR, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2293,7 +2293,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.GBETO, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2362,7 +2362,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.PLUMED_ARCHER, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2431,7 +2431,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.MANGUDAI, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2500,7 +2500,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.WAR_ELEPHANT, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2570,7 +2570,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.OBUCH, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2639,7 +2639,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.ORGAN_GUN, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2708,7 +2708,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.CENTURION, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2777,7 +2777,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.MAMELUKE, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2846,7 +2846,7 @@ tmp = [
 # --- castle ---
 # [UnitInfo.WHITE_FEATHER_GUARD, 3], # !!!!!!!!!!!!!!!!!! not working
 [UnitInfo.PETARD, 3],
-# [UnitInfo.TREBUCHET, 4],
+# [UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2915,7 +2915,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.SERJEANT, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -2984,7 +2984,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.BOYAR, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -3053,7 +3053,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.CONQUISTADOR, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -3122,7 +3122,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.KESHIK, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -3191,7 +3191,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.TEUTONIC_KNIGHT, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -3260,7 +3260,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.JANISSARY, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -3330,7 +3330,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.RATTAN_ARCHER, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -3399,7 +3399,7 @@ tmp = [
 # --- castle ---
 [UnitInfo.BERSERK, 3],
 [UnitInfo.PETARD, 3],
-[UnitInfo.TREBUCHET, 4],
+[UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -3468,7 +3468,7 @@ tmp = [
 # --- castle ---
 # [UnitInfo.TIGER_CAVALRY, 3], # !!!!!!!!!!!!!!!!!! not working
 [UnitInfo.PETARD, 3],
-# [UnitInfo.TREBUCHET, 4],
+# [UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 
@@ -3537,7 +3537,7 @@ tmp = [
 # --- castle ---
 # [UnitInfo.FIRE_ARCHER, 3], # !!!!!!!!!!!!!!!!!! not working
 [UnitInfo.PETARD, 3],
-# [UnitInfo.TREBUCHET, 4],
+# [UnitInfo.TREBUCHET_PACKED, 4],
 
 ]
 

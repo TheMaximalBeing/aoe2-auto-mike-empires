@@ -7,7 +7,7 @@ from utils_units import *
 
 # matchData format
 # 
-# {c2_c3_a2_a3:{u2_u3:{...}]}
+# {c2_c3_a2_a3:{u2_u3:((c2,..),{...})]}
 # 
 # ... = raw, doneCount, count, mean, stdev, sterr, costerr, repeats }
 # raw = [ (c2,c3,a2,a3,u2,u3,unitCount,eunitCount,hpInitial,ehpInitial,hpFinal,ehpFinal,status) ]
