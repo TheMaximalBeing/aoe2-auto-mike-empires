@@ -1,313 +1,210 @@
-import os
-import time
-import pathlib
-
-import pynput.keyboard
-import pygetwindow
-import numpy
-import pandas
 from AoE2ScenarioParser.datasets.object_support import *
 
 from utils_units import *
 from utils_data import *
 from utils_scenario import *
 from config import *
+from utils import *
+from de_auto_game import *
 
-matchData = loadResults()
-matchDataStats = calculateStats(matchData)
-matchDataNew = {}
+class MikeEmpires(DEAutoGame):
 
-# --------------------------------
+    # setup match data
+    def setupData(self):
 
-def printd(val):
-    if debug_print: print("DEBUG:",val)
+        self.matchData = getAllMatches()
+        loadResults(self.matchData)
+        self.all_combos = list(self.matchData.keys())
+        self.combo_index = 0
+        self.combo_offset = 0
 
+    def checkConvergence(self, overdone_th=999):
 
-# --------------------------------
+        nameA = self.all_combos[self.combo_index]
+        completed = True
 
-# focus on AoEII window so that keystrokes work
-printd("switch to AoE II window")
-target_windows = pygetwindow.getWindowsWithTitle("Age of Empires II:")
-if target_windows: target_window = target_windows[0]
-else: raise Exception("Could not find Age of Empires window")
-target_window.activate()
-keyboard = pynput.keyboard.Controller()
+        for _,(_,data) in self.matchData[nameA].items():
 
-# setup for xsdat
-xsdatfile = folder_xsdat + "/" + name_xs_data
-moddate = time.ctime(os.stat(xsdatfile)[8]) # last modified time
+            fullCount = data["fullCount"]
+            sterr = data["sterr"]
+            stdev = data["stdev"]
+            requiredMatches = pow(stdev/sterr_conv_threshold,2)
 
-# helper function to restart scenario
-def restartScenario():
-    
-    global moddate
-    printd("restart match")
-    # target_window.activate()
-    time.sleep(0.2)
-    keyboard.tap(pynput.keyboard.Key.esc)
-    time.sleep(0.3)
-    keyboard.tap(pynput.keyboard.Key.f10)
-    time.sleep(1.5)
-    for i in range(6):
-        keyboard.tap(pynput.keyboard.Key.tab)
-        time.sleep(0.2)
-    keyboard.tap(pynput.keyboard.Key.enter)
-    time.sleep(0.8)
-    keyboard.tap(pynput.keyboard.Key.tab)
-    time.sleep(0.2)
-    keyboard.tap(pynput.keyboard.Key.enter)
-    time.sleep(0.2)
-    keyboard.tap(pynput.keyboard.Key.esc)
+            # note: speculating that pending matches will complete
+            if fullCount >= max_repeats: continue
+            # note: but using non-speculated sterr here
+            if fullCount >= min_repeats and sterr < sterr_conv_threshold: continue
+            # note: below we speculate sterr convergence here
+            if fullCount >= min_repeats and fullCount/requiredMatches >= overdone_th: continue
 
-    # clear xs data file and reset moddate
-    printd("clear xsdat file")
-    with open(xsdatfile, "wb") as f: pass # clear file
-    moddate = time.ctime(os.stat(xsdatfile)[8])
-
-    # wait enough time for the game to restart
-    printd("waiting for game to restart")
-    time.sleep(8)
-
-
-printd("getting all match combos")
-combo_index = 0
-all_combos = []
-
-for c2i in range(len(civ_list)):
-    c2 = civ_list[c2i]
-    for c3i in range(len(civ_list)):
-        if c3i < c2i: continue
-        c3 = civ_list[c3i]
-        for a2i in range(len(age_list)):
-            a2 = age_list[a2i]
-            for a3i in range(len(age_list)):
-                if a3i < a2i: continue
-                a3 = age_list[a3i]
-
-                # no unequal age_list
-                if a2i != a3i: continue
-
-                # get list of units for current ages and civs
-                units2 = allUnits[c2][a2]
-                units3 = allUnits[c3][a3]
-
-                unit_combos = []
-                for i2,u2 in enumerate(units2):
-                    for i3, u3 in enumerate(units3):
-
-                        # no double counting units
-                        if c2i == c3i and a2i == a3i and i3<i2: continue
-                        
-                        name = getMatchName(a2, a3, c2, c3, u2.ID, u3.ID)
-                        num = 0
-                        if name in matchDataStats: num = matchDataStats[name][3]
-
-                        unit_combos.append([u2, u3, num])
-
-                all_combos.append([c2, c3, a2, a3, unit_combos])
-
-# helper function to setup the next scenario
-def setupNextScenario():
-    global combo_index, all_combos, matches_per_scenario, max_repeats, min_repeats, sterr_conv_threshold
-                        
-    # if all combos completed then go to next combo
-
-    if combo_index >= len(all_combos): 
-        printd("there are no remaining scenarios")
-        return (0,0,0,0)
-
-    printd("setup next scenario")
-    (c2, c3, a2, a3, combo) = all_combos[combo_index]
-    completed = True
-    for c in combo:
-
-        name = getMatchName(a2, a3, c2, c3, c[0].ID, c[1].ID)
-        sterr = 0
-        num = 0
-        if name in matchDataStats:
-            sterr = matchDataStats[name][2]
-            num = matchDataStats[name][3]
-
-        if not ((c[2] >= min_repeats and sterr < sterr_conv_threshold) or c[2] >= max_repeats):
             completed = False
             break
+        
+        return completed
 
-    if completed: combo_index += 1
+    # are all scenarios finished?
+    def finished(self):
 
-    if combo_index >= len(all_combos): 
-        printd("there are no remaining scenarios")
-        return (0,0,0,0)
+        num_combos = len(self.all_combos)
+        if self.combo_index+self.combo_offset == num_combos-1 and self.checkConvergence():
+            self.combo_index = num_combos
+            self.combo_offset = 0
+        if self.combo_index >= num_combos: 
+            return True
+        return False
 
-    f = ScenarioMatch()
+    # add next xsdat into full dataset
+    def processXSdata(self, scnData, xsdata):
 
-    # get current combo
-    (c2, c3, a2, a3, combo) = all_combos[combo_index]
-    f.setupPlayer(1, Civilization.BRITONS, StartingAge.POST_IMPERIAL_AGE)
-    f.setupPlayer(2, c2, a2)
-    f.setupPlayer(3, c3, a3)
+        # add the xs data
+        (c2, c3, a2, a3) = scnData
+        addXSdata(c2, c3, a2, a3, xsdata, self.matchData)
 
-    # get min repeats for each combo
-    rcombo = []
-    for c in combo:
+    # setup next scenario
+    def setupNextScenario(self):
+        global matches_per_scenario, max_repeats, min_repeats, sterr_conv_threshold
+                            
+        # check if any combos remaining
+        if self.finished():
+            printd("there are no remaining scenarios")
+            return (0,0,0,0)
+        
+        # check if convergence has been reached, if so then try next combo
+        if self.checkConvergence(overdone_th=1.15): 
+            printd("convergence has been reached")
+            self.combo_index += 1
+            return self.setupNextScenario()
 
-        # get sterr
-        name = getMatchName(a2, a3, c2, c3, c[0].ID, c[1].ID)
-        sterr = 0
-        stdev = 0
-        num = 0
-        if name in matchDataStats:
-            stdev = matchDataStats[name][1]
-            sterr = matchDataStats[name][2]
-            num = matchDataStats[name][3]
+        # if convergence will likely be reached, do the next combo before confirmed completion
+        if self.combo_index < len(self.all_combos)-1 and self.checkConvergence(overdone_th=1.00): 
+            printd("possible convergence has been reached")
+            self.combo_index += 1
+            self.combo_offset -= 1
+            return self.setupNextScenario()
 
-        # estimate how many more matches of this type
-        repA = min_repeats - c[2]
-        repB = max_repeats - c[2]
-        repC = 1.1*(pow(stdev/sterr_conv_threshold,2)-c[2])
+        # setup a new scenario
+        f = ScenarioMatch()
 
-        repeats_left =  min(4*min_repeats,min(repB,max(repA, repC)))
-        repeats_left = int(round(repeats_left))
+        # get estimated remaining repeats for each combo
+        nameA = self.all_combos[self.combo_index]
+        print("index", self.combo_index)
 
-        rcombo.append([repeats_left, c])
+        rcombo = []
+        for nameB,(_,data) in self.matchData[nameA].items():
 
-    # add all matches in combo until we hit the max
-    print("---- repeats-left ----")
-    i = 0
-    while True:
+            # the number of completed + pending matches
+            fullCount = data["fullCount"]
+            stdev = data["stdev"]
+            sterr = data["sterr"]
+            count2 = data["completedCount"]
 
-        rcombo = sorted(rcombo, key=lambda item: -item[0])
-        mrep = rcombo[0][0]
-        if mrep < 3:
-            for r in rcombo: r[0] += 3-mrep
+            repA = min_repeats - fullCount
+            repB = max_repeats - fullCount
+            repC = 1+1.10*pow(stdev/sterr_conv_threshold,2)-fullCount
 
-        for p,(repeats_left,c) in enumerate(rcombo):
-            # if repeats_left > 0:
-            print("- ", c[0].name, c[1].name, repeats_left)
-            # create match for each repeat
-            for l in range(repeats_left):
-                f.createMatch(c[0], c[1], 7, 7, 24, 24)
-                c[2] += 1
-                i += 1
-                if i >= matches_per_scenario: break
+            # todo: a little extra if unconverged so far
 
-            rcombo[p][0] -= int(repeats_left/2)
-            if i >= matches_per_scenario: break
+            repeats_left =  min(4*min_repeats,min(repB,max(repA, repC)))
+            repeats_left = int(round(repeats_left))
 
-        if i >= matches_per_scenario: break
+            # if ACTUAL convergence has already been reach then prioritize other matches
 
-    f.finish()
+            if (fullCount >= min_repeats and sterr < sterr_conv_threshold and count2 > 0) or fullCount >= max_repeats:
+                repeats_left -= 14
 
-    # return known data
-    return (c2,c3,a2,a3)
+            rcombo.append([repeats_left, nameB])
 
-# setup the first scenario
-(c2_,c3_,a2_,a3_) = setupNextScenario()
+        # add all matches in combo until we hit the max
+        printd("---- repeats-left ----")
+        i = 0
+        while True:
 
-# loop over all scenarios
-while True:
+            # highest priority unit first; always prioritize not started matches
+            rcombo = sorted(rcombo, key=lambda item: -item[0]-100 if self.matchData[nameA][item[1]][1]["fullCount"] == 0 else -item[0])
 
-    # check if there are any matches remaining
-    if combo_index >= len(all_combos): 
-        print("all matches have been completed")
-        break
+            # make sure there are some units avaliable
+            maxRep = rcombo[0][0]
+            if maxRep < 3:
+                for r in rcombo: r[0] += 3-maxRep
 
-    # run next scenario and collect constants
-    print("running next set of matches")
-    restartScenario()
-    (c2,c3,a2,a3) = (c2_,c3_,a2_,a3_)
-    (c2_,c3_,a2_,a3_) = setupNextScenario()
+            # loop over units in order of priority
+            for j,(reps,nameB) in enumerate(rcombo):
 
-    # wait until file has been modified
-    printd("waiting for xsdata modify")
-    while True:
-        moddate2 = time.ctime(os.stat(xsdatfile)[8])
-        if moddate2 > moddate: break
-        time.sleep(0.3)
-    time.sleep(1.5) # allow more time for file to be written
+                ((c2,c3,a2,a3,u2,u3),data) = self.matchData[nameA][nameB]
+                if reps > 0:
+                    print("- ", getUnit(u2), getUnit(u3), reps)
 
-    # extract all data from xsdat
-    printd("extracting data from xsdat")
-    data = []
-    with open(xsdatfile, "rb") as f:
-        contents = f.read()
-        size = len(contents)
-        if size == 0: raise Exception("empty xs data file")
-        if size % 4 != 0: raise Exception("xs data file size is not a multiple of 4")
-        for i in range(0,size,4):
-            data.append(int.from_bytes(contents[i:i+4],byteorder="little", signed=True))
- 
-    # process raw xs data
-    printd("process xs data")
-    matches = []
-    for i in range(0,len(data),sizeMatch):
+                # decide how many units
+                n2 = int(num_units/2)
+                n3 = int(num_units/2)
 
-        m = Match()
-        # loaded data
-        m.unitId = data[i+0]
-        m.hpInitial = data[i+1]
-        m.hpFinal = data[i+2]
-        m.unitCount = data[i+3]
-        m.eunitId = data[i+4]
-        m.ehpInitial = data[i+5]
-        m.ehpFinal = data[i+6]
-        m.eunitCount = data[i+7]
-        m.status = data[i+8]
-        # constant data
-        m.civ = c2
-        m.eciv = c3
-        m.age = a2
-        m.eage = a3
+                # create match for each repeat
+                for k in range(reps):
 
-        # only include valid matches
-        if m.status >= 3: matches.append(m)
+                    # if too many units on map, then stop
+                    # ...
 
-    print("added " + str(len(matches)) + " matches")
+                    # if too many matches, then stop
+                    i += 1
+                    if i > matches_per_scenario: break
 
-    # collect data for each matchup
-    for m in matches:
-        name = getMatchName(m.age, m.eage, m.civ, m.eciv, m.unitId, m.eunitId)
-        if name not in matchDataNew: matchDataNew[name] = []
-        matchDataNew[name].append(m)
-        if name not in matchData: matchData[name] = []
-        matchData[name].append(m)
-    
-    # calculate stats for each matchup
-    matchDataStats = calculateStats(matchData)
+                    f.createMatch(u2, u3, n2, n3, match_spacing, match_spacing)
+                    self.matchData[nameA][nameB][1]["fullCount"] += 1
+                    rcombo[j][0] -= 1
 
-    # check if there are any matches remaining
-    if combo_index >= len(all_combos): 
-        print("all matches have been completed")
-        break
+                # don't prioritize anything with unknown convergence
+                if self.matchData[nameA][nameB][1]["completedCount"] == 0:
+                    rcombo[j][0] -= 3
 
+                if i > matches_per_scenario: break
 
-# save results to file
-saveResults(matchDataNew)
+            if i > matches_per_scenario: break
 
-# print results
+        # setup players
+        f.setupPlayer(1, Civilization.FRANKS, StartingAge.POST_IMPERIAL_AGE)
+        f.setupPlayer(2, c2, a2)
+        f.setupPlayer(3, c3, a3)
 
-print("\n\n")
-print("hp percent delta [value, stdev, sterr, num-matches]")
-for name, stats in matchDataStats.items():
+        # write scenario file
+        f.finish()
 
-    [mean, std, sterr, count] = stats
+        self.combo_index += self.combo_offset
+        self.combo_offset = 0
 
-    mean = float(mean*100)
-    std = float(std*100)
-    sterr = float(sterr*100)
+        # return known data
+        scnData = (c2,c3,a2,a3)
+        return scnData
 
-    print(name.rjust(40), "%.2f" % mean, "%.2f" % std, "%.2f" % sterr, count)
+    # save results to file
+    def saveResults(self):
+        saveResults(self.matchData)
 
-matchDataStatsSorted = {k: v for k,v in sorted(matchDataStats.items(), key=lambda item: item[1][0])}
+    # print results
+    def printResults(self):
 
-# print("\n\n")
-# for name, stats in matchDataStatsSorted.items():
+        print("\n\n")
+        print("hp percent delta [value, stdev, sterr, num-matches]")
 
-#     [mean, std, sterr, count] = stats
+        for _, dictt in self.matchData.items():
+            for _, (info, data) in dictt.items():
 
-#     mean = float(mean*100)
-#     std = float(std*100)
-#     sterr = float(sterr*100)
+                mean = float(100*data["mean"])
+                stdev = float(100*data["stdev"])
+                sterr = float(100*data["sterr"])
+                count = data["completedCount"]
 
-#     print(name.rjust(40), "%.2f" % mean, "%.2f" % std, "%.2f" % sterr, count)
+                (c2,c3,a2,a3,u2,u3) = info
+                name  = ".".join((getCiv(c2),getAge(a2),getUnit(u2))) + " vs. "
+                name += ".".join((getCiv(c3),getAge(a3),getUnit(u3)))
 
-pass
+                print(name.rjust(20), "%.2f" % mean, "%.2f" % stdev, "%.2f" % sterr, count)
+
+# -------------------------------
+
+# create and run a new mike-empires
+mike = MikeEmpires()
+mike.setup()
+mike.setupData()
+mike.run()
+mike.saveResults()
+mike.printResults()

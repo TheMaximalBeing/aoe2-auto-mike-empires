@@ -64,9 +64,6 @@ class ScenarioMatch:
 
     def createMatch(self, unitA, unitB, countA, countB, size, spacing):
 
-        unitA = unitA.ID
-        unitB = unitB.ID
-
         lerp = size+spacing
         if self.match_x+lerp >= self.map_size:
             self.match_x = 0
